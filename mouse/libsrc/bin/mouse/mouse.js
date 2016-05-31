@@ -29,20 +29,38 @@
 var mouse;
 (function (mouse) {
     var currentTarget;
+    var stageObj;
+    var isPC;
     var dispatch = function (type, bubbles, x, y, touchPointID) {
-        if (type == "rollover" && currentTarget.isRollOver) {
+        if (type == "rollOver" && currentTarget.isRollOver) {
             return;
         }
-        if (type == "rollover") {
+        if (type == "rollOver") {
             currentTarget.isRollOver = true;
         }
-        else if (type == "rollout") {
+        else if (type == "rollOut") {
             delete currentTarget.isRollOver;
         }
-        //currentTarget.dispatchEventWith(type, bubbles);
+        //处理鼠标手型
+        if (isPC) {
+            try {
+                var canvas = stageObj.$displayList.renderBuffer.surface;
+                ;
+                if (type == "rollOver") {
+                    canvas.style.cursor = "pointer";
+                }
+                else if (type == "rollOut") {
+                    canvas.style.cursor = "default";
+                }
+            }
+            catch (e) {
+            }
+        }
         egret.TouchEvent.dispatchTouchEvent(currentTarget, type, bubbles, false, x, y, touchPointID);
     };
     mouse.enable = function (stage) {
+        isPC = egret.Capabilities.os == "Windows PC" || egret.Capabilities.os == "Mac OS";
+        stageObj = stage;
         var onTouchMove = egret.sys.TouchHandler.prototype.onTouchMove;
         var check = function (x, y, touchPointID) {
             if (currentTarget && !currentTarget.$stage) {
@@ -52,23 +70,23 @@ var mouse;
             if (result != null && result != stage) {
                 if (!currentTarget) {
                     currentTarget = result;
-                    dispatch("rollover", false, x, y, touchPointID);
-                    dispatch("mouseover", true, x, y, touchPointID);
+                    dispatch("rollOver", false, x, y, touchPointID);
+                    dispatch("mouseOver", true, x, y, touchPointID);
                 }
                 else if (result != currentTarget) {
-                    dispatch("mouseout", true, x, y, touchPointID);
+                    dispatch("mouseOut", true, x, y, touchPointID);
                     if (!currentTarget.$hitTest(x, y)) {
-                        dispatch("rollout", false, x, y, touchPointID);
+                        dispatch("rollOut", false, x, y, touchPointID);
                     }
                     currentTarget = result;
-                    dispatch("rollover", false, x, y, touchPointID);
-                    dispatch("mouseover", true, x, y, touchPointID);
+                    dispatch("rollOver", false, x, y, touchPointID);
+                    dispatch("mouseOver", true, x, y, touchPointID);
                 }
             }
             else {
                 if (currentTarget) {
-                    dispatch("mouseout", true, x, y, touchPointID);
-                    dispatch("rollout", false, x, y, touchPointID);
+                    dispatch("mouseOut", true, x, y, touchPointID);
+                    dispatch("rollOut", false, x, y, touchPointID);
                     currentTarget = null;
                 }
             }
@@ -77,9 +95,9 @@ var mouse;
             onTouchMove.call(this, x, y, touchPointID);
             check(x, y, touchPointID);
         };
-        //stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, function (e:egret.TouchEvent) {
-        //
-        //}, null);
+    };
+    mouse.setButtonMode = function (displayObjcet, buttonMode) {
+        displayObjcet["buttonModeForMouse"] = buttonMode;
     };
 })(mouse || (mouse = {}));
 

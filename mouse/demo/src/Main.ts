@@ -146,16 +146,19 @@ class Main extends egret.DisplayObjectContainer {
         //
         this.outContainer.touchEnabled = true;
         this.inShape.touchEnabled = true;
+        
+        //设置鼠标手型
+        mouse.setButtonMode(this.inShape, true);
 
-        this.outContainer.addEventListener("rollover", this.onRollOver, this);
-        this.outContainer.addEventListener("rollout", this.onRollOut, this);
-        this.outContainer.addEventListener("mouseover", this.onMouseOver, this);
-        this.outContainer.addEventListener("mouseout", this.onMouseOut, this);
+        this.outContainer.addEventListener("rollOver", this.onRollOver, this);
+        this.outContainer.addEventListener("rollOut", this.onRollOut, this);
+        this.outContainer.addEventListener("mouseOver", this.onMouseOver, this);
+        this.outContainer.addEventListener("mouseOut", this.onMouseOut, this);
 
-        this.inShape.addEventListener("rollover", this.onRollOver2, this);
-        this.inShape.addEventListener("rollout", this.onRollOut2, this);
-        this.inShape.addEventListener("mouseover", this.onMouseOver2, this);
-        this.inShape.addEventListener("mouseout", this.onMouseOut2, this);
+        this.inShape.addEventListener("rollOver", this.onRollOver2, this);
+        this.inShape.addEventListener("rollOut", this.onRollOut2, this);
+        this.inShape.addEventListener("mouseOver", this.onMouseOver2, this);
+        this.inShape.addEventListener("mouseOut", this.onMouseOut2, this);
     }
 
     private  onRollOver(e:egret.TouchEvent):void {

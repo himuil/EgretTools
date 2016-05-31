@@ -30,6 +30,8 @@
 module mouse {
 
     var currentTarget;
+    var stageObj;
+    var isPC;
 
     var dispatch = function (type:string, bubbles:boolean, x:number, y:number, touchPointID:number) {
         if(type == "rollOver" && currentTarget.isRollOver) {
@@ -41,10 +43,27 @@ module mouse {
         else if(type == "rollOut") {
             delete currentTarget.isRollOver;
         }
+        //处理鼠标手型
+        if(isPC) {
+            try {
+                var canvas = stageObj.$displayList.renderBuffer.surface;;
+                if(type == "rollOver") {
+                    canvas.style.cursor = "pointer";
+                }
+                else if(type == "rollOut") {
+                    canvas.style.cursor = "default";
+                }
+            }
+            catch(e) {
+                
+            }
+        }
         egret.TouchEvent.dispatchTouchEvent(currentTarget, type, bubbles, false, x, y, touchPointID);
     };
 
     export var enable = function (stage:egret.Stage) {
+        isPC = egret.Capabilities.os == "Windows PC" || egret.Capabilities.os == "Mac OS";
+        stageObj = stage;
         var onTouchMove = egret.sys.TouchHandler.prototype.onTouchMove;
         var check = function (x:number, y:number, touchPointID:number) {
             if (currentTarget && !currentTarget.$stage) {
@@ -79,5 +98,9 @@ module mouse {
             onTouchMove.call(this, x, y, touchPointID);
             check(x, y, touchPointID);
         };
+    }
+    
+    export var setButtonMode = function (displayObjcet:egret.DisplayObject, buttonMode:boolean) {
+        displayObjcet["buttonModeForMouse"] = buttonMode;
     }
 }
