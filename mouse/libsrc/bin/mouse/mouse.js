@@ -42,7 +42,7 @@ var mouse;
             delete currentTarget.isRollOver;
         }
         //处理鼠标手型
-        if (isPC) {
+        if (isPC && currentTarget["buttonModeForMouse"]) {
             try {
                 var canvas = stageObj.$displayList.renderBuffer.surface;
                 ;
