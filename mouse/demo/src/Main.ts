@@ -159,6 +159,14 @@ class Main extends egret.DisplayObjectContainer {
         this.inShape.addEventListener("rollOut", this.onRollOut2, this);
         this.inShape.addEventListener("mouseOver", this.onMouseOver2, this);
         this.inShape.addEventListener("mouseOut", this.onMouseOut2, this);
+        
+        // this.inShape.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (){
+        //     this.outContainer.removeChild(this.inShape);
+        // }, this);
+        
+        // this.addEventListener(egret.Event.ENTER_FRAME, function (){
+        //     this.inShape.x += 0.2;
+        // }, this);
     }
 
     private  onRollOver(e:egret.TouchEvent):void {
@@ -187,8 +195,6 @@ class Main extends egret.DisplayObjectContainer {
 
     private  onMouseOver2(e:egret.TouchEvent):void {
         console.log("mouse over2 " + e.target.name + "  " + e.bubbles);
-//			outContainer.removeChild(inShape);
-//        this.inShape.x += 60;
     }
 
     private  onMouseOut2(e:egret.TouchEvent):void {
