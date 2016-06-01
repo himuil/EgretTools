@@ -76,7 +76,7 @@ var mouse;
                 }
                 else if (result != currentTarget) {
                     dispatch("mouseOut", true, x, y);
-                    if (!currentTarget.$hitTest(x, y)) {
+                    if (!currentTarget.$getConcatenatedVisible() || !currentTarget.hitTestPoint(x, y)) {
                         dispatch("rollOut", false, x, y);
                     }
                     currentTarget = result;
