@@ -6,7 +6,8 @@
 			"name": "mouse",
 			"description": "mouse",
 			"files": [
-			  "MouseDelegate.ts"
+				"MouseEvent.ts",
+				"MouseDelegate.ts"
 			],
 			"root": "src"
 		}

@@ -33,7 +33,7 @@ class Main extends egret.DisplayObjectContainer {
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
-    private onAddToStage(event:egret.Event) {
+    private onAddToStage(event: egret.Event) {
         //初始化Resource资源加载库
         //initiate Resource loading library
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
@@ -44,7 +44,7 @@ class Main extends egret.DisplayObjectContainer {
      * 配置文件加载完成,开始预加载preload资源组。
      * configuration file loading is completed, start to pre-load the preload resource group
      */
-    private onConfigComplete(event:RES.ResourceEvent):void {
+    private onConfigComplete(event: RES.ResourceEvent): void {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
@@ -57,7 +57,7 @@ class Main extends egret.DisplayObjectContainer {
      * preload资源组加载完成
      * Preload resource group is loaded
      */
-    private onResourceLoadComplete(event:RES.ResourceEvent):void {
+    private onResourceLoadComplete(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
             RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
             RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
@@ -71,7 +71,7 @@ class Main extends egret.DisplayObjectContainer {
      * 资源组加载出错
      *  The resource group loading failed
      */
-    private onItemLoadError(event:RES.ResourceEvent):void {
+    private onItemLoadError(event: RES.ResourceEvent): void {
         console.warn("Url:" + event.resItem.url + " has failed to load");
     }
 
@@ -79,7 +79,7 @@ class Main extends egret.DisplayObjectContainer {
      * 资源组加载出错
      *  The resource group loading failed
      */
-    private onResourceLoadError(event:RES.ResourceEvent):void {
+    private onResourceLoadError(event: RES.ResourceEvent): void {
         //TODO
         console.warn("Group:" + event.groupName + " has failed to load");
         //忽略加载失败的项目
@@ -91,26 +91,26 @@ class Main extends egret.DisplayObjectContainer {
      * preload资源组加载进度
      * Loading process of preload resource group
      */
-    private onResourceProgress(event:RES.ResourceEvent):void {
+    private onResourceProgress(event: RES.ResourceEvent): void {
         if (event.groupName == "preload") {
         }
     }
 
-    private textfield:egret.TextField;
+    private textfield: egret.TextField;
 
     /**
      * 创建游戏场景
      * Create a game scene
      */
-    private createGameScene2():void {
-        var sky:egret.Bitmap = this.createBitmapByName("bgImage");
+    private createGameScene2(): void {
+        var sky: egret.Bitmap = this.createBitmapByName("bgImage");
         this.addChild(sky);
-        var stageW:number = this.stage.stageWidth;
-        var stageH:number = this.stage.stageHeight;
+        var stageW: number = this.stage.stageWidth;
+        var stageH: number = this.stage.stageHeight;
         sky.width = stageW;
         sky.height = stageH;
 
-        var icon:egret.Bitmap = this.createBitmapByName("egretIcon");
+        var icon: egret.Bitmap = this.createBitmapByName("egretIcon");
         this.addChild(icon);
         icon.scaleX = 0.55;
         icon.scaleY = 0.55;
@@ -146,58 +146,63 @@ class Main extends egret.DisplayObjectContainer {
         //
         this.outContainer.touchEnabled = true;
         this.inShape.touchEnabled = true;
-        
+
         //设置鼠标手型
         mouse.setButtonMode(this.inShape, true);
 
-        this.outContainer.addEventListener("rollOver", this.onRollOver, this);
-        this.outContainer.addEventListener("rollOut", this.onRollOut, this);
-        this.outContainer.addEventListener("mouseOver", this.onMouseOver, this);
-        this.outContainer.addEventListener("mouseOut", this.onMouseOut, this);
+        this.outContainer.addEventListener(mouse.MouseEvent.ROLL_OVER, this.onRollOver, this);
+        this.outContainer.addEventListener(mouse.MouseEvent.ROLL_OUT, this.onRollOut, this);
+        this.outContainer.addEventListener(mouse.MouseEvent.MOUSE_OVER, this.onMouseOver, this);
+        this.outContainer.addEventListener(mouse.MouseEvent.MOUSE_OUT, this.onMouseOut, this);
 
-        this.inShape.addEventListener("rollOver", this.onRollOver2, this);
-        this.inShape.addEventListener("rollOut", this.onRollOut2, this);
-        this.inShape.addEventListener("mouseOver", this.onMouseOver2, this);
-        this.inShape.addEventListener("mouseOut", this.onMouseOut2, this);
-        
+        this.inShape.addEventListener(mouse.MouseEvent.ROLL_OVER, this.onRollOver2, this);
+        this.inShape.addEventListener(mouse.MouseEvent.ROLL_OUT, this.onRollOut2, this);
+        this.inShape.addEventListener(mouse.MouseEvent.MOUSE_OVER, this.onMouseOver2, this);
+        this.inShape.addEventListener(mouse.MouseEvent.MOUSE_OUT, this.onMouseOut2, this);
+
         // this.inShape.addEventListener(egret.TouchEvent.TOUCH_BEGIN, function (){
         //     this.outContainer.removeChild(this.inShape);
         // }, this);
-        
+
         // this.addEventListener(egret.Event.ENTER_FRAME, function (){
         //     this.inShape.x += 0.2;
         // }, this);
+
+        mouse.setMouseMoveEnabled(true);
+        this.outContainer.addEventListener(mouse.MouseEvent.MOUSE_MOVE, function () { 
+            console.log("mouse move"); 
+        }, this);
     }
 
-    private  onRollOver(e:egret.TouchEvent):void {
+    private onRollOver(e: egret.TouchEvent): void {
         console.log("roll over " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onRollOut(e:egret.TouchEvent):void {
+    private onRollOut(e: egret.TouchEvent): void {
         console.log("roll out " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onMouseOver(e:egret.TouchEvent):void {
+    private onMouseOver(e: egret.TouchEvent): void {
         console.log("mouse over " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onMouseOut(e:egret.TouchEvent):void {
+    private onMouseOut(e: egret.TouchEvent): void {
         console.log("mouse out " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onRollOver2(e:egret.TouchEvent):void {
+    private onRollOver2(e: egret.TouchEvent): void {
         console.log("roll over2 " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onRollOut2(e:egret.TouchEvent):void {
+    private onRollOut2(e: egret.TouchEvent): void {
         console.log("roll out2 " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onMouseOver2(e:egret.TouchEvent):void {
+    private onMouseOver2(e: egret.TouchEvent): void {
         console.log("mouse over2 " + e.target.name + "  " + e.bubbles);
     }
 
-    private  onMouseOut2(e:egret.TouchEvent):void {
+    private onMouseOut2(e: egret.TouchEvent): void {
         console.log("mouse out2 " + e.target.name + "  " + e.bubbles);
     }
 
@@ -205,9 +210,9 @@ class Main extends egret.DisplayObjectContainer {
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
      * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
      */
-    private createBitmapByName(name:string):egret.Bitmap {
-        var result:egret.Bitmap = new egret.Bitmap();
-        var texture:egret.Texture = RES.getRes(name);
+    private createBitmapByName(name: string): egret.Bitmap {
+        var result: egret.Bitmap = new egret.Bitmap();
+        var texture: egret.Texture = RES.getRes(name);
         result.texture = texture;
         return result;
     }

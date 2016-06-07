@@ -28,17 +28,122 @@
 //////////////////////////////////////////////////////////////////////////////////////
 var mouse;
 (function (mouse) {
+    var MouseEvent = (function () {
+        function MouseEvent() {
+        }
+        var d = __define,c=MouseEvent,p=c.prototype;
+        /**
+         * @language en_US
+         *
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        /**
+         * @language zh_CN
+         * 当用户鼠标移动时被调用。
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        MouseEvent.MOUSE_MOVE = "mouseMove";
+        /**
+        * @language en_US
+        * Called when the mouse is within the area where the object (not covered by other object).
+        * @version Egret 3.1.0
+        * @platform Web
+        */
+        /**
+         * @language zh_CN
+         * 当鼠标正在对象所在区域内（没有被其他对象覆盖）时调用。
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        MouseEvent.MOUSE_OVER = "mouseOver";
+        /**
+         * @language en_US
+         * Called when the mouse out of the object within the Area.
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        /**
+         * @language zh_CN
+         * 当鼠标移出对象所在区域内时调用。
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        MouseEvent.MOUSE_OUT = "mouseOut";
+        /**
+         * @language en_US
+         * When the mouse enters an object within the Area calls.
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        /**
+         * @language zh_CN
+         * 当鼠标进入对象所在区域内调用。
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        MouseEvent.ROLL_OVER = "rollOver";
+        /**
+         * @language en_US
+         * Called when the mouse out of the object within the Area.
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        /**
+         * @language zh_CN
+         * 当鼠标移出对象所在区域内时调用。
+         * @version Egret 3.1.0
+         * @platform Web
+         */
+        MouseEvent.ROLL_OUT = "rollOut";
+        return MouseEvent;
+    }());
+    mouse.MouseEvent = MouseEvent;
+    egret.registerClass(MouseEvent,'mouse.MouseEvent');
+})(mouse || (mouse = {}));
+
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-2015, Egret Technology Inc.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
+var mouse;
+(function (mouse) {
     var currentTarget;
     var stageObj;
     var isPC;
     var dispatch = function (type, bubbles, x, y) {
-        if (type == "rollOver" && currentTarget.isRollOver) {
+        if (type == mouse.MouseEvent.ROLL_OVER && currentTarget.isRollOver) {
             return;
         }
-        if (type == "rollOver") {
+        if (type == mouse.MouseEvent.ROLL_OVER) {
             currentTarget.isRollOver = true;
         }
-        else if (type == "rollOut") {
+        else if (type == mouse.MouseEvent.ROLL_OUT) {
             delete currentTarget.isRollOver;
         }
         //处理鼠标手型
@@ -46,10 +151,10 @@ var mouse;
             try {
                 var canvas = stageObj.$displayList.renderBuffer.surface;
                 ;
-                if (type == "rollOver") {
+                if (type == mouse.MouseEvent.ROLL_OVER) {
                     canvas.style.cursor = "pointer";
                 }
-                else if (type == "rollOut") {
+                else if (type == mouse.MouseEvent.ROLL_OUT) {
                     canvas.style.cursor = "default";
                 }
             }
@@ -63,31 +168,31 @@ var mouse;
         stageObj = stage;
         var check = function (x, y) {
             if (currentTarget && !currentTarget.$stage) {
-                dispatch("mouseOut", true, x, y);
-                dispatch("rollOut", false, x, y);
+                dispatch(mouse.MouseEvent.MOUSE_OUT, true, x, y);
+                dispatch(mouse.MouseEvent.ROLL_OUT, false, x, y);
                 currentTarget = null;
             }
             var result = stage.$hitTest(x, y);
             if (result != null && result != stage) {
                 if (!currentTarget) {
                     currentTarget = result;
-                    dispatch("rollOver", false, x, y);
-                    dispatch("mouseOver", true, x, y);
+                    dispatch(mouse.MouseEvent.ROLL_OVER, false, x, y);
+                    dispatch(mouse.MouseEvent.MOUSE_OVER, true, x, y);
                 }
                 else if (result != currentTarget) {
-                    dispatch("mouseOut", true, x, y);
+                    dispatch(mouse.MouseEvent.MOUSE_OUT, true, x, y);
                     if (!currentTarget.$getConcatenatedVisible() || !currentTarget.hitTestPoint(x, y)) {
-                        dispatch("rollOut", false, x, y);
+                        dispatch(mouse.MouseEvent.ROLL_OUT, false, x, y);
                     }
                     currentTarget = result;
-                    dispatch("rollOver", false, x, y);
-                    dispatch("mouseOver", true, x, y);
+                    dispatch(mouse.MouseEvent.ROLL_OVER, false, x, y);
+                    dispatch(mouse.MouseEvent.MOUSE_OVER, true, x, y);
                 }
             }
             else {
                 if (currentTarget) {
-                    dispatch("mouseOut", true, x, y);
-                    dispatch("rollOut", false, x, y);
+                    dispatch(mouse.MouseEvent.MOUSE_OUT, true, x, y);
+                    dispatch(mouse.MouseEvent.ROLL_OUT, false, x, y);
                     currentTarget = null;
                 }
             }
@@ -99,6 +204,14 @@ var mouse;
             mouseX = x;
             mouseY = y;
             onTouchMove.call(this, x, y, touchPointID);
+            if (mouseMoveEnabled) {
+                var target = stageObj.$hitTest(x, y);
+                if (!target) {
+                    target = stageObj;
+                }
+                egret.TouchEvent.dispatchTouchEvent(target, mouse.MouseEvent.MOUSE_MOVE, true, true, x, y, touchPointID, true);
+            }
+            check(x, y);
         };
         var onTouchBegin = egret.sys.TouchHandler.prototype.onTouchBegin;
         egret.sys.TouchHandler.prototype.onTouchBegin = function (x, y, touchPointID) {
@@ -118,6 +231,10 @@ var mouse;
     };
     mouse.setButtonMode = function (displayObjcet, buttonMode) {
         displayObjcet["buttonModeForMouse"] = buttonMode;
+    };
+    var mouseMoveEnabled = false;
+    mouse.setMouseMoveEnabled = function (enabled) {
+        mouseMoveEnabled = enabled;
     };
 })(mouse || (mouse = {}));
 
